@@ -1,0 +1,14 @@
+{
+  "maker": "0xee73323912a4e3772b74ed0ca1595a152b0ef282",
+  "bridgeIntitalTxHash": "0xc67043e4fa57bbea5199dd1b3df8495bfed82463b1405dcdfc1580f7cb12ff16",
+  "initialBridgeAmount": "0.005",
+  "ethReceivedOnZksyncEra": "0.002100000000000003",
+  "mute_swap_txhash": "0xf295f9d47aef8f7bec562bee95b837361a6e895810acec18e707569476efcf18",
+  "output_usdc": "4.849425",
+  "output_eth": "0.001051122934757887",
+  "symbiosis_swap_txhash": "",
+  "output_usdc_symbiosis": "",
+  "mes_swap_txhash": "",
+  "output_eth_mes": "",
+  "bridgeInitialTxHash": "0xcab77da969ddc6a22d51be4877302484fae383ad692d06124378d79c0922f7c3"
+}
