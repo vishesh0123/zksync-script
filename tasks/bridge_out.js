@@ -29,6 +29,8 @@ task("bridge_out", async (taskArgs, hre) => {
     const identificationCode = Number(filtered.vc);
 
     let amountToSend = initialBridgeAmount;
+    let vcDigits = identificationCode.toString().length;
+    amountToSend = (amountToSend / BigInt(10 ** vcDigits) * BigInt(10 ** vcDigits))
     amountToSend = amountToSend + BigInt(identificationCode);
 
     const txData = {
