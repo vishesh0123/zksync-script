@@ -29,12 +29,13 @@ task("swap_eth_to_usdc_mute", async (taskArgs, hre) => {
     const deadline = (await signer.provider.getBlock('latest')).timestamp + 60;
     const swapTx = await router.connect(signer).swapExactTokensForTokens(hre.ethers.parseEther(ethToUse.toString()), 0, [WETH, USDC], await signer.getAddress(), deadline, [false]);
     console.log("Swap on MUTE sucessfull..");
+    await swapTx.wait(1);
     const usdcAfter = await usdc.balanceOf(await signer.getAddress());
     console.log("SWAPPED", ethToUse, "ETH for", hre.ethers.formatUnits(usdcAfter - usdcBefore, 6), "USDC");
     const newData = {
         ...data,
         "mute_swap_txhash": swapTx.hash,
-        "output_usdc": hre.ethers.formatUnits(usdcAfter - usdcBefore, 6)
+        "output_usdc_mute": hre.ethers.formatUnits(usdcAfter - usdcBefore, 6)
     }
     await write('txdata.json', newData);
 

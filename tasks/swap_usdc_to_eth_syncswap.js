@@ -12,7 +12,7 @@ task("swap_usdc_to_eth_syncswap", async (taskArgs, hre) => {
     const USDC_ETH_POOL = "0x80115c708E12eDd42E504c1cD52Aea96C547c05c"
     const USDC = "0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4"
     const data = await read('txdata.json');
-    const usdtToUse = data.output_usdc;
+    const usdtToUse = data.output_usdc_symbiosis ? data.output_usdc_symbiosis : data.output_usdc_mute;
 
     const usdc = new hre.ethers.Contract(USDC, erc20, signer.provider);
     console.log("Approving USDC to SYNCSWAP ROUTER");
@@ -45,13 +45,20 @@ task("swap_usdc_to_eth_syncswap", async (taskArgs, hre) => {
 
     const deadline = (await signer.provider.getBlock('latest')).timestamp + 60;
     const swapTx = await router.connect(signer).swap([SwapPath], 0, deadline);
+    await swapTx.wait(1);
 
     const ethAfter = await signer.provider.getBalance(await signer.getAddress());
-    const newData = {
+    const newData = data.output_usdc_symbiosis ? {
+        ...data,
+        "output_eth": hre.ethers.formatEther(ethAfter - ethBefore),
+        "syncswap_swap_txhash1": swapTx.hash
+
+
+    } : {
         ...data,
         "syncswap_swap_txhash": swapTx.hash,
-        "output_eth": hre.ethers.formatEther(ethAfter - ethBefore)
-    }
+        "output_eth_syncswap": hre.ethers.formatEther(ethAfter - ethBefore)
+    };
     console.log("Swapped", usdtToUse, "USDC TO", hre.ethers.formatEther(ethAfter - ethBefore), "ETH");
     await write('txdata.json', newData);
 

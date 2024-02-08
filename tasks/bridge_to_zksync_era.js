@@ -5,7 +5,7 @@ const fs = require('fs');
 const { read, write } = require('../utils/jsonFileUtils');
 
 task("bridge_to_zksync_era", async (taskArgs, hre) => {
-    let srcChainOptions = ['ethereum', 'arbitrum', 'optimism', 'polygon']
+    let srcChainOptions = ['ethereum', 'arbitrum', 'optimism']
     let srcChain = process.env.START_CHAIN
     if (!srcChain || !srcChainOptions.includes(srcChain)) {
         throw new Error('Invalid Chain Cofigured for `START_CHAIN`');
@@ -14,9 +14,6 @@ task("bridge_to_zksync_era", async (taskArgs, hre) => {
     const accounts = await hre.ethers.getSigners();
     const signer = accounts[0];
     let balance = await hre.ethers.provider.getBalance(await signer.getAddress())
-    if (srcChain === 'polygon') {
-        // handle polygon case here
-    }
     console.log("ETH balance on", srcChain, "chain: ", hre.ethers.formatEther(balance));
     let initialBridgeAmount = process.env.INITIAL_BRIDGE_AMOUNT;
     if (!initialBridgeAmount || parseFloat(initialBridgeAmount) > hre.ethers.formatEther(balance)) {
@@ -37,7 +34,12 @@ task("bridge_to_zksync_era", async (taskArgs, hre) => {
     const maxAmt = parseFloat(filtered.maxAmt);
     if (initialBridgeAmount > maxAmt) {
         throw new Error(`Max amount allowed to Bridge is ${maxAmt} ETH`);
-    } // handle min amount case // state available
+    }
+
+    if (initialBridgeAmount < minAmt) {
+        throw new Error(`Min amount allowed to Bridge is ${maxAmt} ETH`);
+
+    }
     const identificationCode = Number(filtered.vc);
     let amountToSend = hre.ethers.parseEther(initialBridgeAmount);
     amountToSend = amountToSend + BigInt(identificationCode);

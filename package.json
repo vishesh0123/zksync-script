@@ -4,7 +4,9 @@
   "description": "This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.",
   "main": "hardhat.config.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:arbitrum": "npx hardhat --network arbitrum bridge_to_zksync_era && npx hardhat --network zksyncEraMainnet mainnet ",
+    "start:ethereum": "npx hardhat --network ethereum bridge_to_zksync_era && npx hardhat --network zksyncEraMainnet mainnet ",
+    "start:optimism": "npx hardhat --network optimism bridge_to_zksync_era && npx hardhat --network zksyncEraMainnet mainnet "
   },
   "author": "",
   "license": "ISC",
