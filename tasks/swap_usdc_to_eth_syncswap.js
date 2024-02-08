@@ -16,7 +16,7 @@ task("swap_usdc_to_eth_syncswap", async (taskArgs, hre) => {
 
     const usdc = new hre.ethers.Contract(USDC, erc20, signer.provider);
     console.log("Approving USDC to SYNCSWAP ROUTER");
-    await usdc.connect(signer).approve(ROUTER, hre.ethers.parseUnits(usdtToUse, 6))
+    await usdc.connect(signer).approve(ROUTER, hre.ethers.parseUnits(usdtToUse, 6) + hre.ethers.parseUnits("1", 6))
 
 
 

@@ -19,7 +19,7 @@ task("swap_eth_to_usdc_mute", async (taskArgs, hre) => {
     })
     console.log("Successfully Converted ETH to WETH");
     console.log("Approving WETH to MUTE pool for swap");
-    await weth.connect(signer).approve(ROUTER, hre.ethers.parseEther(ethToUse.toString()));
+    await weth.connect(signer).approve(ROUTER, hre.ethers.parseEther(ethToUse.toString()) + hre.parseEther("1"));
 
     const USDC = "0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4"
     const usdc = new hre.ethers.Contract(USDC, erc20, signer.provider);
